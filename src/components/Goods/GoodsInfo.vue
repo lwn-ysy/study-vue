@@ -93,6 +93,15 @@ export default {
     addToShopCar() {
       // 添加到购物车
       this.ballFlag = !this.ballFlag;
+
+      //传递数据到vuex.store状态管理库
+      var carGoodList = {
+        id:this.id,
+        price:this.goodsinfo.sell_price,
+        count:this.selectedCount,
+        selected:true
+      }
+      this.$store.commit('addToCard',carGoodList);//调用
     },
     beforeEnter(el) {
       el.style.transform = "translate(0, 0)";

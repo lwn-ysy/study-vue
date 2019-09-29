@@ -19,7 +19,73 @@ Vue.http.options.root = 'http://localhost:3000';
 Vue.http.options.emulateJSON = true;
  */
 
- 
+
+//导入vuex转态管理器
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
+//调用localStorage的购物车信息
+var car = JSON.parse(localStorage.getItem('car') || '[]');
+
+var store = new Vuex.Store({
+    state: {
+        //分析，将购物车的商品数据，用一个数组保存起来，
+        //暂时设计成[id:商品id，count:要购买的数量，price:商品的单价，selected:falses是否被选中]
+        car: car
+    },
+    mutations: {
+        //添加购物车数据--GoodsInfo组件里
+        addToCard(state, carGoodList) {
+            //分析：如果之前就有数据，直接修改car.count即可
+            //如果没有，直接push整个carGoodList到car数组
+            var flag = false;
+            state.car.some(item => {
+                if (item.id == carGoodList.id) {
+                    item.count += parseInt(carGoodList.count);
+                    flag = true;//标记已成功找到
+                    return true;//跳出循坏
+                }
+            });
+            if (!flag) {
+                state.car.push(carGoodList);
+            };
+
+            //当更新car之后，把car数组存储到本地的local storage
+            localStorage.setItem('car',JSON.stringify(this.state.car));
+        },
+        //修改购物车数据--ShopcarContainer组件里
+        updateGoodsInfo(state,carGoodList){
+            state.car.some(item => {
+                if (item.id == carGoodList.id) {
+                    item.count = parseInt(carGoodList.count);
+                    return true;//跳出循坏
+                }
+            });
+            localStorage.setItem('car',JSON.stringify(this.state.car));
+        },
+        //删除购物车数据--ShopcarContainer组件里
+        removeFormCar(state,id){
+            state.car.some((item,index)=> {
+                if (item.id == id) {
+                    this.state.car.splice(index,1)
+                    return true;//跳出循坏
+                }
+            });
+            localStorage.setItem('car',JSON.stringify(this.state.car));
+        }
+    },
+    //相当于 计算属性 ， 也相当于filters
+    getters: {
+        getAllCount(state) {
+            var c = 0;
+            state.car.forEach(item => {
+                c += item.count
+            });
+            return c;
+        }
+    }
+});
+
 //按需导入mint-ui 组件并注册
 import MintUI from 'mint-ui';
 import 'mint-ui/lib/style.css';
@@ -46,5 +112,6 @@ import App from './App.vue';
 var vm = new Vue({
     el: '#app',
     render: c => c(App),
-    router:router,//4.挂载路由实例
+    router: router,//4.挂载路由实例
+    store: store//挂载store状态 管理器
 });
