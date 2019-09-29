@@ -19,7 +19,7 @@
 				<span class="mui-tab-label">会员</span>
 			</router-link>
 			<router-link class="mui-tab-item-llb" to="/shopcar">
-				<span class="mui-icon mui-icon-extra mui-icon-extra-cart"><span class="mui-badge">9</span></span>
+				<span class="mui-icon mui-icon-extra mui-icon-extra-cart"><span class="mui-badge" id="badge">9</span></span>
 				<span class="mui-tab-label">购物车</span>
 			</router-link>
 			<router-link class="mui-tab-item-llb" to="/search">
@@ -29,12 +29,15 @@
 		</nav>
     </div>
 </template>
-<style scoped>
+<style lang='scss' scoped>
 
 .app-container{
     padding-top: 40px;
 	padding-bottom: 50px;
-	overflow-x: hidden 
+	overflow-x: hidden ;
+	.mt-header{
+		z-index: 99;
+	}
 }
 .v-enter{
 	opacity: 0;
@@ -72,7 +75,7 @@
     padding-top: 0;
     padding-bottom: 0;
 }
-.mui-bar-tab .mui-tab-item-llb .mui-icon~.mui-tab-label {
+.mui-bar-tab .mui-tab-item-llb .mui-icon .mui-tab-label {
     font-size: 11px;
     display: block;
     overflow: hidden;

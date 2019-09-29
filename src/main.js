@@ -27,10 +27,14 @@ Vue.use(MintUI);
 
 
 //导入MUI
-import './lib/mui/css/mui.min.css'
+import './lib/mui/css/mui.min.css';
 //mui扩展的图标--购物车的
-import './lib/mui/css/icons-extra.css'
+import './lib/mui/css/icons-extra.css';
 
+
+//导入vue-preview图片缩略图插件
+import Vuepreivew from 'vue-preview';
+Vue.use(Vuepreivew);
 
 
 //组件模板

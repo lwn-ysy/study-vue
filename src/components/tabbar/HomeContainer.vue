@@ -1,11 +1,7 @@
 <template>
     <div>
         <!-- 轮播图 -->
-        <mt-swipe :auto="4000">
-            <mt-swipe-item v-for="item in imgsList" v-bind:key="item.id">
-                <img v-bind:src="item.url" alt="">
-            </mt-swipe-item>
-        </mt-swipe>
+        <swiper :imgsList='imgsList'></swiper>
 
         <!-- 图标入口 -->
         <ul class="mui-table-view mui-grid-view mui-grid-9">
@@ -13,13 +9,20 @@
                 <router-link to="/home/newlist">
                     <img src="../../images/menu1.png" alt="">
                     <div class="mui-media-body">新闻资讯</div>
-                </router-link></li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/photolist">
+                </router-link>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+                <router-link to="/home/photolist">
                     <img src="../../images/menu2.png" alt="">
-                    <div class="mui-media-body">图片分享</div></router-link></li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
+                    <div class="mui-media-body">图片分享</div>
+                </router-link>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+                <router-link to="/home/goodslist">
                     <img src="../../images/menu3.png" alt="">
-                    <div class="mui-media-body">商品购买</div></a></li>
+                    <div class="mui-media-body">商品购买</div>
+                </router-link>
+            </li>
             <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">
                     <img src="../../images/menu4.png" alt="">
                     <div class="mui-media-body">留言反馈</div></a></li>
@@ -36,6 +39,7 @@
 
 <script>
 //！！！后续添加服务端请求数据库---3
+import swiper from '../subcomments/lubotu.vue'
 export default {
     data(){
         return {
@@ -47,6 +51,9 @@ export default {
             ]
         }
     },
+    components:{
+        swiper
+    }
 }
 /* 使用vue-resource
     1.main.js导入并安装vue-resoure
@@ -68,12 +75,7 @@ export default {
 
 
 <style lang='scss' scoped>
-.mint-swipe{
-    height: 200px;
-    img{
-        width: 100%;
-    }
-}
+
 .mui-grid-view.mui-grid-9{
     background-color: #fff;
     border: none;
