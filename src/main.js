@@ -34,7 +34,7 @@ var store = new Vuex.Store({
         car: car
     },
     mutations: {
-        //添加购物车数据--GoodsInfo组件里
+        //添加购物车数据--来自GoodsInfo组件里
         addToCard(state, carGoodList) {
             //分析：如果之前就有数据，直接修改car.count即可
             //如果没有，直接push整个carGoodList到car数组
@@ -53,7 +53,7 @@ var store = new Vuex.Store({
             //当更新car之后，把car数组存储到本地的local storage
             localStorage.setItem('car',JSON.stringify(this.state.car));
         },
-        //修改购物车数据--ShopcarContainer组件里
+        //修改购物车数据--来自ShopcarContainer组件里
         updateGoodsInfo(state,carGoodList){
             state.car.some(item => {
                 if (item.id == carGoodList.id) {
@@ -63,7 +63,7 @@ var store = new Vuex.Store({
             });
             localStorage.setItem('car',JSON.stringify(this.state.car));
         },
-        //删除购物车数据--ShopcarContainer组件里
+        //删除购物车数据--来自ShopcarContainer组件里
         removeFormCar(state,id){
             state.car.some((item,index)=> {
                 if (item.id == id) {
@@ -72,16 +72,51 @@ var store = new Vuex.Store({
                 }
             });
             localStorage.setItem('car',JSON.stringify(this.state.car));
+        },
+        //更改购物车的selected数据--来自shopcarContainer组件
+        changeCarSelected(state,id){
+            state.car.some((item)=> {
+                if (item.id == id) {
+                    item.selected = !item.selected;
+                    return true;//跳出循坏
+                }
+            });
+            localStorage.setItem('car',JSON.stringify(this.state.car));
         }
+
     },
     //相当于 计算属性 ， 也相当于filters
     getters: {
+        //购物车的总件数
         getAllCount(state) {
             var c = 0;
             state.car.forEach(item => {
                 c += item.count
             });
             return c;
+        },
+        //getters函数只能传参state和getters
+        //返回一个对象，然后调用时通过属性来，模拟传参
+        getSelected(state){
+            var b = {};
+            state.car.forEach(item => {
+                b[item.id] = item.selected;
+            });
+            return b;
+        },
+        //获取自动结算件数和总价
+        getCount(state){
+            var b= {
+                count:0,
+                sumPrice:0
+            }
+            state.car.forEach(item => {
+                if(item.selected){
+                    b.count += item.count;
+                    b.sumPrice += item.count * item.price;
+                };
+            })
+            return b;
         }
     }
 });

@@ -8,12 +8,13 @@
 			<div class="mui-card-content">
 				<div class="mui-card-content-inner">
 
-                    <mt-switch ></mt-switch>
+                    <!-- change是mt-switch插件的event事件 -->
+                    <mt-switch v-model="$store.getters.getSelected[item.id]" @change="selectedChange(item.id)"></mt-switch>
                     <img src="../../images/menu1.png" alt="">
                     <div class="info">
                         <h1>id:{{item.id}}---这个titlt暂时没数据</h1>
                         <p>
-                            <span class="price">￥2199</span>
+                            <span class="price">￥{{item.price}}</span>
                             <numbox v-bind:cellCount='item.count' :goodsId='item.id'></numbox>
                             <a href="#" @click.prevent="remove(item.id)">删除</a>
                         </p>
@@ -30,7 +31,7 @@
 				<div class="mui-card-content-inner jiesuan">
                     <div class="left">
                         <p>总计（不含运费）</p>
-                        <p>已勾选商品 <span class="red">0</span> 件，总价<span class="red">￥0</span></p>
+                        <p>已勾选商品 <span class="red">{{$store.getters.getCount.count}}</span> 件，总价<span class="red">￥{{$store.getters.getCount.sumPrice}}</span></p>
                     </div>
                     <mt-button type='danger'>去结算</mt-button>
 				</div>
@@ -50,8 +51,13 @@ export default {
         numbox:numbox
     },
     methods:{
+        //点击删除，删除购物车car的对应id的所有数据
         remove(id){
             this.$store.commit('removeFormCar',id);
+        },
+        //点击切换开关，切换购物车car的对应id的selected属性
+        selectedChange(id){
+            this.$store.commit("changeCarSelected",id)
         }
     }
 }
